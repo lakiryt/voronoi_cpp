@@ -13,6 +13,7 @@ struct SiteEvent
 struct CircleEvent
 {
     Coord position;
+    Coord circleCenter;
     Arc* disappearing;
     bool valid;
 };
