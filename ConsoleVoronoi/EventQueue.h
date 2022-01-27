@@ -3,6 +3,7 @@
 #include "Util.h"
 
 // BeachLine.h
+class BeachLine;
 struct Arc;
 
 struct SiteEvent
