@@ -44,10 +44,12 @@ private:
 	}
 	void setLeftChild(BeachLine* l) {
 		left = l;
+		l->parent = this;
 		updateHeight();
 	}
 	void setRightChild(BeachLine* r) {
 		right = r;
+		r->parent = this;
 		updateHeight();
 	}
 	void updateHeight();
@@ -55,6 +57,7 @@ private:
 	std::optional<std::variant<Arc*, BreakPoint>> data;
 	int height;
 
+	BeachLine* parent;
 	BeachLine* left;
 	BeachLine* right;
 };

@@ -153,9 +153,11 @@ void BeachLine::insert(double x, double sweepLineY, DCEL* interim_diag, EventQue
 				right_bp.siteRight = outerSite;
 				// Beaches
 				left = new BeachLine(); // Left Arc
+				left->parent = this;
 				// this // Left BPt
 				BeachLine* rleft = new BeachLine(); // Middle Arc
 				right = new BeachLine(); // Right BPt
+				right->parent = this;
 				BeachLine* rright = new BeachLine(); // Right Arc
 				// set data and beach relations
 				left->setData(leftBrokenArc);
