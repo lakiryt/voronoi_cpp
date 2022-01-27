@@ -133,7 +133,10 @@ void BeachLine::insert(double x, double sweepLineY, DCEL* interim_diag, EventQue
 				// Delete false alarm (Invalidate)
 				// delete a.disappear; // ??
 				if (a->disappear)
+				{
 					a->disappear->valid = false;
+					a->disappear = NULL;
+				}
 
 				// # construct subtree #
 				Coord outerSite = a->siteAbove;
