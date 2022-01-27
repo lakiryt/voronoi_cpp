@@ -14,7 +14,7 @@ struct CircleEvent
 {
     Coord position;
     Coord circleCenter;
-    Arc* disappearing;
+    BeachLine* disappearingArc;
     bool valid;
 };
 
