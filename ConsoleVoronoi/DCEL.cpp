@@ -1,3 +1,4 @@
+#include <iostream>
 #include "DCEL.h"
 
 DCEL::DCEL()
@@ -7,5 +8,9 @@ DCEL::DCEL()
 
 void DCEL::display()
 {
-	
+	std::cout << "[DCEL] with " << this->edges.size() << " half-edges and " << this->vertices.size() << " vertices:\n";
+	for (Vertex* v : vertices)
+	{
+		std::cout << "(" << v->getPosition().x << "," << v->getPosition().y << ")";
+	}
 }
