@@ -46,4 +46,5 @@ void handleSiteEvent(SiteEvent* e)
 void handleCircleEvent(CircleEvent* e)
 {
     std::cout << "Circle event detected.";
+    e->disappearingArc->shrink(e, &diagram);
 }

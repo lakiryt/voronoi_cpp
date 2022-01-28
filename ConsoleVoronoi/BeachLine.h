@@ -37,6 +37,7 @@ public:
 	void display();
 
 	void insert(double x, double sweepLineY, DCEL* interim_diag, EventQueue* event_queue);
+	void shrink(CircleEvent* e, DCEL* interim_diag);
 
 private:
 	void setData(std::variant<Arc*, BreakPoint> d) {
