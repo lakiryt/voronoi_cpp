@@ -63,11 +63,6 @@ public:
 
     void push(Event e)
     {
-        std::cout << "Pushed ";
-        std::visit(overload{
-            [](SiteEvent* ei) {std::cout << "site (" << ei->position.x << "," << ei->position.y << ")\n"; },
-            [](CircleEvent* ei) {std::cout << "circle (" << ei->position.x << "," << ei->position.y << ")\n"; }
-            }, e.i);
         events.push(e);
     }
 
