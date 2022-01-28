@@ -31,6 +31,7 @@ public:
 		data = std::nullopt;
 		left = NULL;
 		right = NULL;
+		parent = NULL;
 	};
 
 	void display();
