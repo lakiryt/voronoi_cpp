@@ -252,7 +252,7 @@ void BeachLine::shrink(CircleEvent* e, DCEL* interim_diag, EventQueue* event_que
 		former_sibling->parent = this->parent->parent;
 
 		// Retrieve old bp data
-		left_bp_data = std::get<BreakPoint>(foldpoint->parent->data.value());
+		left_bp_data = std::get<BreakPoint>(left_bp->data.value());
 		right_bp_data = std::get<BreakPoint>(this->parent->data.value());
 
 		left_arc_beach = left_bp;
@@ -282,7 +282,7 @@ void BeachLine::shrink(CircleEvent* e, DCEL* interim_diag, EventQueue* event_que
 		}
 		former_sibling->parent = this->parent->parent;
 
-		right_bp_data = std::get<BreakPoint>(foldpoint->parent->data.value());
+		right_bp_data = std::get<BreakPoint>(right_bp->data.value());
 		left_bp_data = std::get<BreakPoint>(this->parent->data.value());
 
 		left_arc_beach = this->parent;
