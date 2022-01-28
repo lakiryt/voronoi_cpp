@@ -55,6 +55,7 @@ private:
 		updateHeight();
 	}
 	void updateHeight();
+	void checkCircle(Arc* arcdata, double y, EventQueue* evq);
 
 	std::optional<std::variant<Arc*, BreakPoint>> data;
 	int height;

@@ -112,6 +112,23 @@ std::optional<Coord> center3(Coord p1, Coord p2, Coord p3)
 	return std::optional<Coord>({ x,y });
 }
 
+void BeachLine::checkCircle(Arc* arc, double sweepLineY, EventQueue* event_queue)
+{
+	std::optional<Coord> center = center3(arc->left->siteAbove, arc->siteAbove, arc->right->siteAbove);
+	if (center.has_value())
+	{
+		double sq_dist = std::pow(center.value().x - arc->siteAbove.x, 2) + std::pow(center.value().y - arc->siteAbove.y, 2);
+		double event_y = center.value().y - std::sqrt(sq_dist);
+		if (event_y <= sweepLineY) // TODO: handle '==' case (four points on circle)
+		{
+			Coord ev_pos = { center.value().x, event_y };
+			CircleEvent* cev = new CircleEvent{ ev_pos, center.value(), this, true };
+			event_queue->push({ cev });
+		}
+	}
+
+}
+
 void BeachLine::insert(double x, double sweepLineY, DCEL* interim_diag, EventQueue* event_queue)
 {
 	if (!data.has_value()) // empty beach
@@ -180,36 +197,10 @@ void BeachLine::insert(double x, double sweepLineY, DCEL* interim_diag, EventQue
 
 				// Check left triple for circle
 				if (a->left)
-				{
-					std::optional<Coord> center = center3(leftBrokenArc->left->siteAbove, leftBrokenArc->siteAbove, leftBrokenArc->right->siteAbove);
-					if (center.has_value())
-					{
-						double sq_dist = std::pow(center.value().x - a->siteAbove.x, 2) + std::pow(center.value().y - a->siteAbove.y, 2);
-						double event_y = center.value().y - std::sqrt(sq_dist);
-						if (event_y <= sweepLineY) // TODO: handle '==' case (four points on circle)
-						{
-							Coord ev_pos = { center.value().x, event_y };
-							CircleEvent* cev = new CircleEvent{ ev_pos, center.value(), left, true };
-							event_queue->push({ cev });
-						}
-					}
-				}
+					left->checkCircle(leftBrokenArc, sweepLineY, event_queue);
 				// Check right triple for circle
 				if (a->right)
-				{
-					std::optional<Coord> center = center3(rightBrokenArc->left->siteAbove, rightBrokenArc->siteAbove, rightBrokenArc->right->siteAbove);
-					if (center.has_value())
-					{
-						double sq_dist = std::pow(center.value().x - a->siteAbove.x, 2) + std::pow(center.value().y - a->siteAbove.y, 2);
-						double event_y = center.value().y - std::sqrt(sq_dist);
-						if (event_y <= sweepLineY) // TODO: handle '==' case (four points on circle)
-						{
-							Coord ev_pos = { center.value().x, event_y };
-							CircleEvent* cev = new CircleEvent{ ev_pos, center.value(), rright, true };
-							event_queue->push({ cev });
-						}
-					}
-				}
+					rright->checkCircle(rightBrokenArc, sweepLineY, event_queue);
 			},
 			[&](BreakPoint b) {
 				// internal node
