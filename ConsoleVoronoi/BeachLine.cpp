@@ -229,6 +229,8 @@ void BeachLine::shrink(CircleEvent* e, DCEL* interim_diag, EventQueue* event_que
 	BeachLine* foldpoint;
 	BeachLine* former_sibling;
 	BreakPoint left_bp_data, right_bp_data;
+	BeachLine* left_arc_beach;
+	BeachLine* right_arc_beach;
 	if (this->parent->left == this)
 	{
 		former_sibling = this->parent->right;
@@ -252,6 +254,13 @@ void BeachLine::shrink(CircleEvent* e, DCEL* interim_diag, EventQueue* event_que
 		// Retrieve old bp data
 		left_bp_data = std::get<BreakPoint>(foldpoint->parent->data.value());
 		right_bp_data = std::get<BreakPoint>(this->parent->data.value());
+
+		left_arc_beach = left_bp;
+		while (left_arc_beach->right)
+			left_arc_beach = left_arc_beach->right;
+		right_arc_beach = this->parent;
+		while (right_arc_beach->left)
+			right_arc_beach = right_arc_beach->left;
 	}
 	else // this->parent->right == this
 	{
@@ -275,6 +284,13 @@ void BeachLine::shrink(CircleEvent* e, DCEL* interim_diag, EventQueue* event_que
 
 		right_bp_data = std::get<BreakPoint>(foldpoint->parent->data.value());
 		left_bp_data = std::get<BreakPoint>(this->parent->data.value());
+
+		left_arc_beach = this->parent;
+		while (left_arc_beach->right)
+			left_arc_beach = left_arc_beach->right;
+		right_arc_beach = right_bp;
+		while (right_arc_beach->left)
+			right_arc_beach = right_arc_beach->left;
 	}
 	std::cout << "left breakpoint: " << left_bp_data.siteLeft.x << "," << left_bp_data.siteLeft.y << " | " << left_bp_data.siteRight.x << "," << left_bp_data.siteRight.y;
 	if (left_bp_data.bisector) std::cout << " with "; else std::cout << " without ";
@@ -290,20 +306,34 @@ void BeachLine::shrink(CircleEvent* e, DCEL* interim_diag, EventQueue* event_que
 	BreakPoint new_bp = {out_edge, left_bp_data.siteLeft, right_bp_data.siteRight };
 	foldpoint->parent->setData(new_bp);
 
-	// Delete all events involving this arc
+	// Delete all events involving this arc ;  3. check circles; detach this arc from neighbours
 	Arc* thisArc = std::get<Arc*>(this->data.value());
-	if(thisArc->left)
+	if (thisArc->left)
+	{
 		if (thisArc->left->disappear)
 		{
 			thisArc->left->disappear->valid = false;
 			thisArc->left->disappear = NULL;
 		}
+
+		if (thisArc->left->left)
+			left_arc_beach->checkCircle(thisArc->left, e->position.y, event_queue);
+
+		thisArc->left->right = thisArc->right;
+	}
 	if (thisArc->right)
+	{
 		if (thisArc->right->disappear)
 		{
 			thisArc->right->disappear->valid = false;
 			thisArc->right->disappear = NULL;
 		}
+
+		if (thisArc->right->right)
+			right_arc_beach->checkCircle(thisArc->right, e->position.y, event_queue);
+
+		thisArc->right->left = thisArc->left;
+	}
 
 	// Add vertex and set pointers
 	Vertex* new_vtx = interim_diag->createNewVertex(e->circleCenter);
@@ -315,9 +345,6 @@ void BeachLine::shrink(CircleEvent* e, DCEL* interim_diag, EventQueue* event_que
 	// Connect edges
 	right_bp_data.bisector->setNext(out_edge);
 	left_bp_data.bisector->getTwin()->setPrev(in_edge);
-
-	// 3. Check circles
-	//e->disappearing
 
 	// updateHeight for all ancestors
 	BeachLine* search = former_sibling;
