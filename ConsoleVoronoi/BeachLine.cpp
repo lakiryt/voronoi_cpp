@@ -154,6 +154,13 @@ void BeachLine::insert(double x, double sweepLineY, DCEL* interim_diag, EventQue
 				BreakPoint right_bp = BreakPoint();
 				right_bp.siteLeft = innerSite;
 				right_bp.siteRight = outerSite;
+				// New Halfedges
+				HalfEdge* leftEdge = interim_diag->createNewEdge();
+				HalfEdge* rightEdge = interim_diag->createNewEdge();
+				leftEdge->setTwin(rightEdge);
+				left_bp.bisector = leftEdge;
+				right_bp.bisector = rightEdge;
+
 				// Beaches
 				left = new BeachLine(); // Left Arc
 				left->parent = this;
@@ -170,14 +177,6 @@ void BeachLine::insert(double x, double sweepLineY, DCEL* interim_diag, EventQue
 				rright->setData(rightBrokenArc);
 				right->setLeftChild(rleft);
 				right->setRightChild(rright);
-
-				// New Halfedges
-				HalfEdge* leftEdge = interim_diag->createNewEdge();
-				HalfEdge* rightEdge = interim_diag->createNewEdge();
-				leftEdge->setTwin(rightEdge);
-				rightEdge->setTwin(leftEdge);
-				left_bp.bisector = leftEdge;
-				right_bp.bisector = rightEdge;
 
 				// Check left triple for circle
 				if (a->left)
