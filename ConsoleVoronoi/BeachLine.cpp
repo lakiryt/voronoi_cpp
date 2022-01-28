@@ -219,7 +219,7 @@ void BeachLine::insert(double x, double sweepLineY, DCEL* interim_diag, EventQue
 }
 
 // Assume this is an arc surrounded with neighbours
-void BeachLine::shrink(CircleEvent* e, DCEL* interim_diag)
+void BeachLine::shrink(CircleEvent* e, DCEL* interim_diag, EventQueue* event_queue)
 {
 	std::cout << "\nshrink() called on:\n";
 	this->display();
