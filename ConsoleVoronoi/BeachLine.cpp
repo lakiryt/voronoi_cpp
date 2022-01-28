@@ -189,8 +189,8 @@ void BeachLine::insert(double x, double sweepLineY, DCEL* interim_diag, EventQue
 						if (event_y <= sweepLineY) // TODO: handle '==' case (four points on circle)
 						{
 							Coord ev_pos = { center.value().x, event_y };
-							CircleEvent cev = { ev_pos, center.value(), left, true };
-							event_queue->push({ &cev });
+							CircleEvent* cev = new CircleEvent{ ev_pos, center.value(), left, true };
+							event_queue->push({ cev });
 						}
 					}
 				}
@@ -205,8 +205,8 @@ void BeachLine::insert(double x, double sweepLineY, DCEL* interim_diag, EventQue
 						if (event_y <= sweepLineY) // TODO: handle '==' case (four points on circle)
 						{
 							Coord ev_pos = { center.value().x, event_y };
-							CircleEvent cev = { ev_pos, center.value(), rright, true };
-							event_queue->push({ &cev });
+							CircleEvent* cev = new CircleEvent{ ev_pos, center.value(), rright, true };
+							event_queue->push({ cev });
 						}
 					}
 				}
