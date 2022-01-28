@@ -45,6 +45,6 @@ void handleSiteEvent(SiteEvent* e)
 // Assume validity
 void handleCircleEvent(CircleEvent* e)
 {
-    std::cout << "Circle event detected.";
+    std::cout << "\n * Circle (" << e->circleCenter.x <<"," << e->circleCenter.y << ") event at (" << e->position.x << "," << e->position.y << ") detected.\n";
     e->disappearingArc->shrink(e, &diagram, &events);
 }
