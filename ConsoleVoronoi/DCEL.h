@@ -87,15 +87,19 @@ class DCEL
 public:
     // Generates empty DCEL with one face.
     DCEL();
-    // void addVertex(Coord c)
-    // {
-    //    vertices.push_back(new Vertex(c));
-    // }
+
     HalfEdge* createNewEdge()
     {
         HalfEdge* edge = new HalfEdge();
         edges.push_back(edge);
         return edge;
+    }
+
+    Vertex* createNewVertex(Coord c)
+    {
+        Vertex* vertex = new Vertex(c);
+        vertices.push_back(vertex);
+        return vertex;
     }
 
     void display();
