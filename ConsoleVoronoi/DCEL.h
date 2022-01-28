@@ -24,6 +24,10 @@ public:
     {
         incidentEdge = halfedge;
     }
+    Coord getPosition()
+    {
+        return position;
+    }
 
 private:
     Coord position;
@@ -51,6 +55,10 @@ public:
         this->next = NULL;
         this->prev = NULL;
     };
+    void setOrigin(Vertex* o)
+    {
+        this->origin = o;
+    }
     void setTwin(HalfEdge* newTwin) {
         this->twin = newTwin;
         newTwin->twin = this;
@@ -63,6 +71,9 @@ public:
         this->prev = newPrev;
         newPrev->next = this;
     };
+
+    HalfEdge* getTwin() { return twin; };
+
 private:
     HalfEdge* twin;
     HalfEdge* next;
