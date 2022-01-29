@@ -101,7 +101,7 @@ std::optional<Coord> center3(Coord p1, Coord p2, Coord p3)
 	//std::cout << a23 << "x + " << b23 << " = y.";
 
 	// Handle collinearity // ??
-	if (std::pow(a12 - a23, 2) < 0.0001)
+	if (std::abs(a12 - a23) < DBL_EPSILON)
 		return std::nullopt;
 
 	// Intersection of y = a12 * x + b12 and y = a23 * x + b23
