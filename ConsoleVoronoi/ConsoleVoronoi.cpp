@@ -30,7 +30,9 @@ int main()
             [](CircleEvent* e) { if (e->valid) handleCircleEvent(e); }
             }, events.pop().i);
     }
-    // TODO: Compute bounding box & half infinite edge crossing it
+    // Compute bounding box & half infinite edge crossing it
+    diagram.createBoundingBox(input, beach.getHalfInfinites());
+
     // TODO: Add cell records
     // beach.display();
 }
