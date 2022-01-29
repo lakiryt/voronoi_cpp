@@ -10,6 +10,8 @@ struct Coord
 };
 
 class HalfEdge;
+class BeachLine;
+class BreakPoint;
 
 class Vertex
 {
