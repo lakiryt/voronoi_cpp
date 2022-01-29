@@ -358,3 +358,35 @@ void BeachLine::shrink(CircleEvent* e, DCEL* interim_diag, EventQueue* event_que
 	delete this;
 }
 
+std::vector<BreakPoint> BeachLine::getHalfInfinites()
+{
+	std::vector<BreakPoint> res;
+
+	if (this->data.has_value())
+	{
+		std::visit(overload{ [](Arc* a) {}, [&](BreakPoint b) {
+			res.push_back(b);
+			//std::cout << "pbok\n";
+			for (const BreakPoint &bp : this->left->getHalfInfinites())
+				res.push_back(bp);
+			for (const BreakPoint &bp : this->right->getHalfInfinites())
+				res.push_back(bp);
+			/*
+			res.insert(
+				res.end(),
+				std::make_move_iterator(this->left->getHalfInfinites().begin()),
+				std::make_move_iterator(this->left->getHalfInfinites().end())
+			);
+			std::cout << "in1ok\n";
+			res.insert(
+				res.end(),
+				std::make_move_iterator(this->right->getHalfInfinites().begin()),
+				std::make_move_iterator(this->right->getHalfInfinites().end())
+			);
+			std::cout << "in2ok\n";
+			*/
+			} }, this->data.value());
+	}
+
+	return res;
+}

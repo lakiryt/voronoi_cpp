@@ -38,6 +38,7 @@ public:
 
 	void insert(double x, double sweepLineY, DCEL* interim_diag, EventQueue* event_queue);
 	void shrink(CircleEvent* e, DCEL* interim_diag, EventQueue* event_queue);
+	std::vector<BreakPoint> getHalfInfinites();
 
 private:
 	void setData(std::variant<Arc*, BreakPoint> d) {
