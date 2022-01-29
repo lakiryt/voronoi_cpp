@@ -104,6 +104,8 @@ public:
         return vertex;
     }
 
+    void createBoundingBox(std::vector<Coord> sites, std::vector<BreakPoint> halfinfinites);
+
     void display();
 
 private:
