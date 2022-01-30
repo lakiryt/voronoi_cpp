@@ -30,6 +30,10 @@ public:
     {
         return position;
     }
+    HalfEdge* getIncident()
+    {
+        return incidentEdge;
+    }
 
 private:
     Coord position;
@@ -75,6 +79,8 @@ public:
     };
 
     HalfEdge* getTwin() { return twin; };
+    HalfEdge* getNext() { return next; };
+    Vertex* getOrigin() { return origin; };
 
 private:
     HalfEdge* twin;
