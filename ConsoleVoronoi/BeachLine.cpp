@@ -2,11 +2,26 @@
 #include "BeachLine.h"
 
 
-double BreakPoint::xCoord(double sweepLineY)
+Coord BreakPoint::position(double sweepLineY)
 {
-	return (siteRight.x * (siteLeft.y - sweepLineY) - siteLeft.x * (siteRight.y - sweepLineY)) / (siteLeft.y - siteRight.y);
-}
+	double a = -(siteRight.x - siteLeft.x) / (siteRight.y - siteLeft.y);
+	double b = (siteRight.y + siteLeft.y) / 2 - a * (siteRight.x + siteLeft.x) / 2;
 
+	// ax+b = |(x,y)-siteLeft| = |(x,y)-siteRight| = y
+	// (x-siteLeft.x)^2 + (y-siteLeft.y)^2 = y^2
+	// (x^2 - 2*x*siteLeft.x + siteLeft.x^2) -2*y*siteLeft.y + siteLeft.y^2 = 0
+	// (x^2 - 2*x*siteLeft.x + siteLeft.x^2) -2*(ax+b)*siteLeft.y + siteLeft.y^2 = 0
+	// x^2 - 2*(siteLeft.x + a*siteLeft.y)*x + siteLeft.x^2 -2*b*siteLeft.y + siteLeft.y^2 = 0
+	double solb = -2 * (siteLeft.x + a * siteLeft.y);
+	double solc = std::pow(siteLeft.x, 2) - 2 * b * siteLeft.y + std::pow(siteLeft.y, 2);
+	double discriminant = std::sqrt(std::pow(solb, 2) + 4 * solc);
+	double factor;
+	if (siteLeft.x < siteRight.x) factor = 1; else factor = -1;
+	double solx = (-solb - factor * discriminant) / 2;
+
+	return { solx, a * solx + b };
+}
+/*
 double BreakPoint::yCoord(double sweepLineY)
 {
 	auto parabola1 = [&](double x) {
@@ -16,6 +31,7 @@ double BreakPoint::yCoord(double sweepLineY)
 
 	return parabola1(xCoord(sweepLineY));
 }
+*/
 
 
 /// <summary>
@@ -204,7 +220,7 @@ void BeachLine::insert(double x, double sweepLineY, DCEL* interim_diag, EventQue
 			},
 			[&](BreakPoint b) {
 				// internal node
-				if (x < b.xCoord(sweepLineY))
+				if (x < b.position(sweepLineY).x)
 				{
 					left->insert(x, sweepLineY, interim_diag, event_queue);
 				}

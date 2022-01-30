@@ -16,8 +16,7 @@ struct Arc {
 
 class BreakPoint {
 public:
-	double xCoord(double sweepLineY);
-	double yCoord(double sweepLineY);
+	Coord position(double sweepLineY);
 	HalfEdge* bisector;
 	Coord siteLeft;
 	Coord siteRight;
