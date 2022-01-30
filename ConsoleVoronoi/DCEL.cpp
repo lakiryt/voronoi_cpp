@@ -75,6 +75,8 @@ void DCEL::createBoundingBox(std::vector<Coord> sites, std::vector<BreakPoint> h
 			}
 		}
 		// Create and connect new intersection point
-		bp.bisector->getTwin()->setOrigin(this->createNewVertex(intersection));
+		Vertex* new_vtx = this->createNewVertex(intersection);
+		bp.bisector->getTwin()->setOrigin(new_vtx);
+		new_vtx->setIncident(bp.bisector->getTwin());
 	}
 }
