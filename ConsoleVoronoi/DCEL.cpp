@@ -14,6 +14,17 @@ void DCEL::display()
 	{
 		std::cout << "(" << v->getPosition().x << "," << v->getPosition().y << ")";
 	}
+	std::cout << "\n";
+	for (HalfEdge* e : edges)
+	{
+		std::cout << "[" << e << "]:" << e->getTwin() << ":";
+		if (e->getOrigin())
+		{
+			Coord opos = e->getOrigin()->getPosition();
+			std::cout << "(" << opos.x << "," << opos.y << ")->*";
+		}
+		std::cout << "\n";
+	}
 }
 
 // Assume sites to be non-empty
