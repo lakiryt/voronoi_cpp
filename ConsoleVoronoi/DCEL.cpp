@@ -57,11 +57,11 @@ void DCEL::createBoundingBox(std::vector<Coord> sites, std::vector<BreakPoint> h
 
 			// intersection with vertical (left/right) lines (guaranteed to exist in this case-distinction branch)
 			if (bp.siteLeft.y < bp.siteRight.y)
-				// intersection with left border
-				intersection = { minBound.x , a * (minBound.x) + b };
-			else
 				// intersection with right border
 				intersection = { maxBound.x , a * (maxBound.x) + b };
+			else
+				// intersection with left border
+				intersection = { minBound.x , a * (minBound.x) + b };
 
 			// switch to intersection with horizontal lines, if needed
 			if (intersection.y < minBound.y || maxBound.y < intersection.y)
