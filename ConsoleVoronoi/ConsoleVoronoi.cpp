@@ -35,6 +35,7 @@ int main()
 
     // TODO: Add cell records
     // beach.display();
+    diagram.display();
 }
 
 void handleSiteEvent(SiteEvent* e)
