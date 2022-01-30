@@ -52,7 +52,7 @@ void DCEL::createBoundingBox(std::vector<Coord> sites, std::vector<BreakPoint> h
 		}
 		else
 		{
-			double a = -(bp.siteRight.x - bp.siteLeft.x) / (bp.siteLeft.y - bp.siteRight.y); // neg.inverse rise over run
+			double a = -(bp.siteRight.x - bp.siteLeft.x) / (bp.siteRight.y - bp.siteLeft.y); // negative inverse rise over run
 			double b = (bp.siteLeft.y + bp.siteRight.y) / 2 - a * ((bp.siteLeft.x + bp.siteRight.x) / 2); // midpoint (x,y) satisfies ax+b=y
 
 			// intersection with vertical (left/right) lines (guaranteed to exist in this case-distinction branch)
