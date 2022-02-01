@@ -4,20 +4,23 @@
 
 Coord BreakPoint::position(double sweepLineY)
 {
-	double a = -(siteRight.x - siteLeft.x) / (siteRight.y - siteLeft.y);
-	double b = (siteRight.y + siteLeft.y) / 2 - a * (siteRight.x + siteLeft.x) / 2;
 
+	double left_y = siteLeft.y - sweepLineY;
+	double right_y = siteRight.y - sweepLineY;
+
+	double a = -(siteRight.x - siteLeft.x) / (siteRight.y - left_y);
+	double b = (right_y + left_y) / 2 - a * (siteRight.x + siteLeft.x) / 2;
 	// ax+b = |(x,y)-siteLeft| = |(x,y)-siteRight| = y
 	// (x-siteLeft.x)^2 + (y-siteLeft.y)^2 = y^2
 	// (x^2 - 2*x*siteLeft.x + siteLeft.x^2) -2*y*siteLeft.y + siteLeft.y^2 = 0
 	// (x^2 - 2*x*siteLeft.x + siteLeft.x^2) -2*(ax+b)*siteLeft.y + siteLeft.y^2 = 0
 	// x^2 - 2*(siteLeft.x + a*siteLeft.y)*x + siteLeft.x^2 -2*b*siteLeft.y + siteLeft.y^2 = 0
-	double solb = -2 * (siteLeft.x + a * siteLeft.y);
-	double solc = std::pow(siteLeft.x, 2) - 2 * b * siteLeft.y + std::pow(siteLeft.y, 2);
-	double discriminant = std::sqrt(std::pow(solb, 2) + 4 * solc);
+	double solb = -2 * (siteLeft.x + a * left_y);
+	double solc = std::pow(siteLeft.x, 2) - 2 * b * left_y + std::pow(left_y, 2);
+	double discriminant = std::sqrt(std::pow(solb, 2) - 4 * solc);
 	double factor;
-	if (siteLeft.x < siteRight.x) factor = 1; else factor = -1;
-	double solx = (-solb - factor * discriminant) / 2;
+	if (siteLeft.y > siteRight.y) factor = -1; else factor = 1;
+	double solx = (-solb + factor * discriminant) / 2;
 
 	return { solx, a * solx + b };
 }
