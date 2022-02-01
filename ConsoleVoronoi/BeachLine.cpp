@@ -331,7 +331,7 @@ void BeachLine::shrink(CircleEvent* e, DCEL* interim_diag, EventQueue* event_que
 	BreakPoint new_bp = {out_edge, left_bp_data.siteLeft, right_bp_data.siteRight };
 	foldpoint->parent->setData(new_bp);
 
-	// Delete all events involving this arc ;  3. check circles; detach this arc from neighbours
+	// Delete all events involving this arc ; detach this arc from neighbours
 	Arc* thisArc = std::get<Arc*>(this->data.value());
 	if (thisArc->left)
 	{
@@ -341,10 +341,8 @@ void BeachLine::shrink(CircleEvent* e, DCEL* interim_diag, EventQueue* event_que
 			thisArc->left->disappear = NULL;
 		}
 
-		if (thisArc->left->left)
-			left_arc_beach->checkCircle(thisArc->left, e->position.y, event_queue);
-
 		thisArc->left->right = thisArc->right;
+
 	}
 	if (thisArc->right)
 	{
@@ -354,11 +352,15 @@ void BeachLine::shrink(CircleEvent* e, DCEL* interim_diag, EventQueue* event_que
 			thisArc->right->disappear = NULL;
 		}
 
-		if (thisArc->right->right)
-			right_arc_beach->checkCircle(thisArc->right, e->position.y, event_queue);
-
 		thisArc->right->left = thisArc->left;
 	}
+	// Check for new circles
+	if (thisArc->left)
+		if (thisArc->left->left)
+			left_arc_beach->checkCircle(thisArc->left, e->position.y, event_queue);
+	if (thisArc->right)
+		if (thisArc->right->right)
+			right_arc_beach->checkCircle(thisArc->right, e->position.y, event_queue);
 
 	// Add vertex and set pointers
 	Vertex* new_vtx = interim_diag->createNewVertex(e->circleCenter);
