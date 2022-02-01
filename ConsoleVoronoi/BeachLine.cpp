@@ -279,10 +279,10 @@ void BeachLine::shrink(CircleEvent* e, DCEL* interim_diag, EventQueue* event_que
 		left_bp_data = std::get<BreakPoint>(left_bp->data.value());
 		right_bp_data = std::get<BreakPoint>(this->parent->data.value());
 
-		left_arc_beach = left_bp;
+		left_arc_beach = left_bp->left;
 		while (left_arc_beach->right)
 			left_arc_beach = left_arc_beach->right;
-		right_arc_beach = this->parent;
+		right_arc_beach = former_sibling;
 		while (right_arc_beach->left)
 			right_arc_beach = right_arc_beach->left;
 	}
@@ -309,10 +309,11 @@ void BeachLine::shrink(CircleEvent* e, DCEL* interim_diag, EventQueue* event_que
 		right_bp_data = std::get<BreakPoint>(right_bp->data.value());
 		left_bp_data = std::get<BreakPoint>(this->parent->data.value());
 
-		left_arc_beach = this->parent;
+		// Get pointers to the beach lines of the neighbour arcs
+		left_arc_beach = former_sibling;
 		while (left_arc_beach->right)
 			left_arc_beach = left_arc_beach->right;
-		right_arc_beach = right_bp;
+		right_arc_beach = right_bp->right;
 		while (right_arc_beach->left)
 			right_arc_beach = right_arc_beach->left;
 	}
