@@ -188,6 +188,8 @@ void BeachLine::insert(double x, double sweepLineY, DCEL* interim_diag, EventQue
 				Arc* rightBrokenArc = new Arc{ outerSite, NULL, newMiddleArc, a->right };
 				leftBrokenArc->right = newMiddleArc;
 				newMiddleArc->right = rightBrokenArc;
+				if (a->left) a->left->right = leftBrokenArc;
+				if (a->right) a->right->left = rightBrokenArc;
 				// BreakPoints
 				BreakPoint left_bp = BreakPoint();
 				left_bp.siteLeft = outerSite;
