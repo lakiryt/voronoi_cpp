@@ -150,6 +150,7 @@ void BeachLine::checkCircle(Arc* arc, double sweepLineY, EventQueue* event_queue
 		{
 			Coord ev_pos = { center.value().x, event_y };
 			CircleEvent* cev = new CircleEvent{ ev_pos, center.value(), this, true };
+			arc->disappear = cev;
 			event_queue->push({ cev });
 		}
 	}
