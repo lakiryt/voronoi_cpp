@@ -130,6 +130,14 @@ std::optional<Coord> center3(Coord p1, Coord p2, Coord p3)
 
 void BeachLine::checkCircle(Arc* arc, double sweepLineY, EventQueue* event_queue)
 {
+	// Check for validity
+	// view from site left.
+	Coord middle_ = { arc->siteAbove.x - arc->left->siteAbove.x , arc->siteAbove.y - arc->left->siteAbove.y };
+	Coord right_ = { arc->right->siteAbove.x - arc->left->siteAbove.x, arc->right->siteAbove.y - arc->left->siteAbove.y };
+	Coord right_ortho = { -right_.y, right_.x };
+	double dot_prod = right_ortho.x * middle_.x + right_ortho.y * middle_.y;
+	if (dot_prod <= 0) return; // 0??
+
 	std::optional<Coord> center = center3(arc->left->siteAbove, arc->siteAbove, arc->right->siteAbove);
 	if (center.has_value())
 	{
