@@ -4,7 +4,6 @@
 
 // BeachLine.h
 class BeachLine;
-struct Arc;
 
 struct SiteEvent
 {
@@ -39,32 +38,12 @@ struct CompareY_gt {
 class EventQueue
 {
 public:
-    EventQueue(std::vector<Coord> sites = {})
-    {
-        for (const Coord &c : sites) {
-            SiteEvent* new_site = new SiteEvent();
-            new_site->position = c;
-            std::variant<SiteEvent*, CircleEvent*> i = new_site;
-            events.push({ i });
-        }
-    };
+    EventQueue(std::vector<Coord> sites = {});
 
-    bool isEmpty()
-    {
-        return events.empty();
-    }
-
-    Event pop()
-    {
-        Event e = events.top();
-        events.pop();
-        return e;
-    }
-
-    void push(Event e)
-    {
-        events.push(e);
-    }
+    bool isEmpty() { return events.empty(); }
+    Event pop();
+    void push(Event e);
+    size_t size() { return events.size(); }
 
 private:
     std::priority_queue<Event, std::vector<Event>, CompareY_gt> events;

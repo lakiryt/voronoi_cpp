@@ -1,5 +1,4 @@
 #include <iostream>
-#include "DCEL.h"
 #include "BeachLine.h"
 
 DCEL::DCEL()

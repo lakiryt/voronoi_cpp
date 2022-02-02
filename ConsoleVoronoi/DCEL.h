@@ -1,16 +1,7 @@
 #pragma once
-#include<vector>
-#include<queue>
-#include<variant>
-
-struct Coord
-{
-    double x;
-    double y;
-};
+#include "Util.h"
 
 class HalfEdge;
-class BeachLine;
 class BreakPoint;
 
 class Vertex
