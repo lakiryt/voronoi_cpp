@@ -54,11 +54,27 @@ void DCEL::createBoundingBox(std::vector<Coord> sites, std::vector<BreakPoint> h
 		if (std::abs(bp.siteLeft.y - bp.siteRight.y) < DBL_EPSILON)
 		{
 			if (bp.siteLeft.x < bp.siteRight.x)
+			{
 				// intersection with bottom line
 				intersection = { (bp.siteLeft.x + bp.siteRight.x) / 2, minBound.y };
+				if (bp.bisector->getOrigin() == NULL)
+				{
+					Vertex* new_vtx = this->createNewVertex({ (bp.siteLeft.x + bp.siteRight.x) / 2, maxBound.y });
+					bp.bisector->setOrigin(new_vtx);
+					new_vtx->setIncident(bp.bisector);
+				}
+			}
 			else // if (bp.siteLeft.x > bp.siteRight.x) // TODO: check example of case in which this exists
+			{
 				// intersection with top line
 				intersection = { (bp.siteLeft.x + bp.siteRight.x) / 2, maxBound.y };
+				if (bp.bisector->getOrigin() == NULL)
+				{
+					Vertex* new_vtx = this->createNewVertex({ (bp.siteLeft.x + bp.siteRight.x) / 2, minBound.y });
+					bp.bisector->setOrigin(new_vtx);
+					new_vtx->setIncident(bp.bisector);
+				}
+			}
 		}
 		else
 		{

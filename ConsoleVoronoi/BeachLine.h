@@ -37,6 +37,11 @@ public:
 
 	void insert(double x, double sweepLineY, DCEL* interim_diag, EventQueue* event_queue);
 	void shrink(CircleEvent* e, DCEL* interim_diag, EventQueue* event_queue);
+
+	// Initial same-y's
+	void handleSameY(Coord leftSite, Coord rightSite, DCEL* interim_diag);
+	void insertSameY(Coord site, DCEL* interim_diag);
+
 	std::vector<BreakPoint> getHalfInfinites();
 
 private:

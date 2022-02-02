@@ -120,8 +120,16 @@ std::optional<Coord> center3(Coord p1, Coord p2, Coord p3)
 	//std::cout << a23 << "x + " << b23 << " = y.";
 
 	// Handle collinearity // ??
-	if (std::abs(a12 - a23) < DBL_EPSILON)
+	if ((std::abs(p2.y - p1.y) < DBL_EPSILON && std::abs(p2.y - p3.y) < DBL_EPSILON)
+		|| std::abs(a12 - a23) < DBL_EPSILON)
 		return std::nullopt;
+
+	// Now assume at least one of them not vertical
+	// First line vertical
+	if (std::abs(p2.y - p1.y) < DBL_EPSILON)
+		return std::optional<Coord>({ (p1.y- b23)/ a23 , p1.y });
+	if (std::abs(p2.y - p3.y) < DBL_EPSILON)
+		return std::optional<Coord>({ (p3.y - b12) / a12 , p3.y });
 
 	// Intersection of y = a12 * x + b12 and y = a23 * x + b23
 	double x = (b23 - b12) / (a12 - a23);
@@ -389,6 +397,100 @@ void BeachLine::shrink(CircleEvent* e, DCEL* interim_diag, EventQueue* event_que
 
 	delete this->parent;
 	delete this;
+}
+
+void BeachLine::insertSameY(Coord site, DCEL* interim_diag)
+{
+	// Assume: not empty, all sites in interim_diag are the same Y coordinate as site
+	std::variant<Arc*, BreakPoint> data_i = data.value();
+
+	std::visit(overload{
+		[&](Arc* a) {
+			// leaf
+			// # construct subtree #
+			double left_x = std::min(a->siteAbove.x, site.x);
+			double right_x = std::max(a->siteAbove.x, site.x);
+			Coord leftSite = { left_x, site.y };
+			Coord rightSite = { right_x, site.y };
+			// Arcs
+			Arc* leftArc = new Arc{ leftSite, NULL, a->left, NULL };
+			Arc* rightArc = new Arc{ rightSite, NULL, leftArc, a->right };
+			leftArc->right = rightArc;
+			if (a->left) a->left->right = leftArc;
+			if (a->right) a->right->left = rightArc;
+			// BreakPoints
+			BreakPoint bp = BreakPoint();
+			bp.siteLeft = leftSite;
+			bp.siteRight = rightSite;
+			// New Halfedges
+			HalfEdge* up = interim_diag->createNewEdge();
+			HalfEdge* down = interim_diag->createNewEdge();
+			up->setTwin(down);
+			bp.bisector = down;
+
+			// Beaches
+			left = new BeachLine();
+			left->parent = this;
+			right = new BeachLine();
+			right->parent = this;
+			// set data and beach relations
+			left->setData(leftArc);
+			this->setData(bp);
+			right->setData(rightArc);
+		},
+		[&](BreakPoint b) {
+			// internal node
+			if (site.x < (b.siteLeft.x + b.siteRight.y) / 2)
+			{
+				left->insertSameY(site, interim_diag);
+				if (b.siteLeft.x < site.x)
+				{
+					b.siteLeft = site;
+					this->setData(b);
+				}
+			}
+			else
+			{
+				right->insertSameY(site, interim_diag);
+				if (site.x < b.siteRight.x)
+				{
+					b.siteRight = site;
+					this->setData(b);
+				}
+			}
+		}
+		}, data_i);
+	updateHeight();
+
+}
+
+void BeachLine::handleSameY(Coord leftSite, Coord rightSite, DCEL* diag)
+{
+	// Arcs
+	Arc* leftArc = new Arc{ leftSite, NULL, NULL, NULL };
+	Arc* rightArc = new Arc{ rightSite, NULL, leftArc, NULL };
+	leftArc->right = rightArc;
+
+	// BreakPoints
+	BreakPoint bp = BreakPoint();
+	bp.siteLeft = leftSite;
+	bp.siteRight = rightSite;
+
+	// New Halfedges
+	HalfEdge* up = diag->createNewEdge();
+	HalfEdge* down = diag->createNewEdge();
+	up->setTwin(down);
+	bp.bisector = down;
+
+	// Beaches
+	left = new BeachLine();
+	left->parent = this;
+	right = new BeachLine();
+	right->parent = this;
+	// set data and beach relations
+	left->setData(leftArc);
+	this->setData(bp);
+	right->setData(rightArc);
 }
 
 std::vector<BreakPoint> BeachLine::getHalfInfinites()

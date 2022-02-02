@@ -41,6 +41,7 @@ public:
     EventQueue(std::vector<Coord> sites = {});
 
     bool isEmpty() { return events.empty(); }
+    Event top() { return events.top(); }
     Event pop();
     void push(Event e);
     size_t size() { return events.size(); }

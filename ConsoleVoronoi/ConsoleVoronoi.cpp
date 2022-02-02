@@ -23,6 +23,38 @@ int main()
     diagram = DCEL();
     events = EventQueue(input);
 
+    // Handle same y-coordinate at the beginning
+    if (events.size() >= 2)
+    {
+        double initial_y;
+        Event e1 = events.pop();
+        Event e2 = events.pop();
+        SiteEvent* e1i = std::get<SiteEvent*>(e1.i);
+        SiteEvent* e2i = std::get<SiteEvent*>(e2.i);
+        if (std::abs(e1i->position.y - e2i->position.y) < DBL_EPSILON)
+        {
+            if (e1i->position.x < e2i->position.x)
+                beach.handleSameY(e1i->position, e2i->position, &diagram);
+            else
+                beach.handleSameY(e2i->position, e1i->position, &diagram);
+            if (!events.isEmpty()) {
+                initial_y = e1i->position.y;
+                // Handle succesive same y-coordinates
+                while (!events.isEmpty() && std::abs(std::get<SiteEvent*>(events.top().i)->position.y - initial_y) < DBL_EPSILON)
+                {
+                    beach.display();
+                    beach.insertSameY(std::get<SiteEvent*>(events.pop().i)->position, &diagram);
+                }
+            }
+        }
+        else
+        {
+            events.push(e2);
+            events.push(e1);
+        }
+        beach.display();
+    }
+
     while (!events.isEmpty())
     {
         std::visit(overload{
