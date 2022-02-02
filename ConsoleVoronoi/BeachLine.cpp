@@ -8,7 +8,7 @@ Coord BreakPoint::position(double sweepLineY)
 	double left_y = siteLeft.y - sweepLineY;
 	double right_y = siteRight.y - sweepLineY;
 
-	double a = -(siteRight.x - siteLeft.x) / (siteRight.y - left_y);
+	double a = -(siteRight.x - siteLeft.x) / (right_y - left_y);
 	double b = (right_y + left_y) / 2 - a * (siteRight.x + siteLeft.x) / 2;
 	// ax+b = |(x,y)-siteLeft| = |(x,y)-siteRight| = y
 	// (x-siteLeft.x)^2 + (y-siteLeft.y)^2 = y^2
@@ -22,7 +22,7 @@ Coord BreakPoint::position(double sweepLineY)
 	if (siteLeft.y > siteRight.y) factor = -1; else factor = 1;
 	double solx = (-solb + factor * discriminant) / 2;
 
-	return { solx, a * solx + b };
+	return { solx, a * solx + b + sweepLineY };
 }
 /*
 double BreakPoint::yCoord(double sweepLineY)
