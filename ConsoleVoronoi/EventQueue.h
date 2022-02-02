@@ -41,7 +41,7 @@ class EventQueue
 public:
     EventQueue(std::vector<Coord> sites = {})
     {
-        for (Coord c : sites) {
+        for (const Coord &c : sites) {
             SiteEvent* new_site = new SiteEvent();
             new_site->position = c;
             std::variant<SiteEvent*, CircleEvent*> i = new_site;
