@@ -133,10 +133,15 @@ std::optional<Coord> center3(Coord p1, Coord p2, Coord p3)
 	// Now assume at least one of them not vertical
 	// First line vertical
 	if (std::abs(p2.y - p1.y) < DBL_EPSILON)
-		return std::optional<Coord>({ (p1.y- b23)/ a23 , p1.y });
+	{
+		double x = (p1.x + p2.x) / 2;
+		return std::optional<Coord>({ x, a23 * x + b23 });
+	}
 	if (std::abs(p2.y - p3.y) < DBL_EPSILON)
-		return std::optional<Coord>({ (p3.y - b12) / a12 , p3.y });
-
+	{
+		double x = (p2.x + p3.x) / 2;
+		return std::optional<Coord>({ x, a12 * x + b12 });
+	}
 	// Intersection of y = a12 * x + b12 and y = a23 * x + b23
 	double x = (b23 - b12) / (a12 - a23);
 	double y = a12 * x + b12; // = a23 * x + b23;
