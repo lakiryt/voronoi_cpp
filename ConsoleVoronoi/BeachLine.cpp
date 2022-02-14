@@ -8,6 +8,12 @@ Coord BreakPoint::position(double sweepLineY)
 	double left_y = siteLeft.y - sweepLineY;
 	double right_y = siteRight.y - sweepLineY;
 
+	if (abs(left_y - right_y) < DBL_EPSILON)
+	{
+		double x = (siteLeft.x + siteRight.x) / 2;
+		return { x, (std::pow(x - siteLeft.x,2) + std::pow(left_y,2)) / (2 * left_y) };
+	}
+
 	double a = -(siteRight.x - siteLeft.x) / (right_y - left_y);
 	double b = (right_y + left_y) / 2 - a * (siteRight.x + siteLeft.x) / 2;
 	// ax+b = |(x,y)-siteLeft| = |(x,y)-siteRight| = y
