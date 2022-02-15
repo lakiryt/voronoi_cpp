@@ -451,7 +451,7 @@ void BeachLine::insertSameY(Coord site, DCEL* interim_diag)
 		},
 		[&](BreakPoint b) {
 			// internal node
-			if (site.x < (b.siteLeft.x + b.siteRight.y) / 2)
+			if (site.x < (b.siteLeft.x + b.siteRight.x) / 2)
 			{
 				left->insertSameY(site, interim_diag);
 				if (b.siteLeft.x < site.x)
