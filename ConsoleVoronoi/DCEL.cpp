@@ -44,8 +44,9 @@ void DCEL::createBoundingBox(std::vector<Coord> sites, std::vector<BreakPoint> h
 		minBound = { std::min(v->getPosition().x, minBound.x), std::min(v->getPosition().y, minBound.y) };
 		maxBound = { std::max(v->getPosition().x, maxBound.x), std::max(v->getPosition().y, maxBound.y) };
 	}
-	minBound = { minBound.x - 1, minBound.y - 1 };
-	maxBound = { maxBound.x + 1, maxBound.y + 1 };
+	double margin = 3;
+	minBound = { minBound.x - margin, minBound.y - margin };
+	maxBound = { maxBound.x + margin, maxBound.y + margin };
 
 	for (const BreakPoint &bp : halfinfinites)
 	{
