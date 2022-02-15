@@ -14,6 +14,19 @@ void DCEL::display()
 		std::cout << "(" << v->getPosition().x << "," << v->getPosition().y << ")";
 	}
 	std::cout << "\n";
+	bool parity = true;
+	for (HalfEdge* e : edges)
+	{
+		///*
+		parity = !parity;
+		if (parity) continue;
+		if (!e->getOrigin()) { std::cout << "a\n"; continue; }
+		if (!e->getTwin()->getOrigin()) { std::cout << "b\n"; continue; }
+		Coord opos = e->getOrigin()->getPosition();
+		Coord twinp = e->getTwin()->getOrigin()->getPosition();
+		std::cout << "plot([" << opos.x << " " << twinp.x << "], [" << opos.y << " " << twinp.y << "])\n";
+	}
+	/*
 	for (HalfEdge* e : edges)
 	{
 		std::cout << "[" << e << "]:" << e->getTwin() << ":";
@@ -24,6 +37,7 @@ void DCEL::display()
 		}
 		std::cout << "\n";
 	}
+	*/
 }
 
 // Assume sites to be non-empty

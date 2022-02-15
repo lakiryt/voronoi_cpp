@@ -14,10 +14,15 @@ void handleCircleEvent(CircleEvent*);
 
 int main()
 {
-    std::cout << "Voronoi Test\n\n";
 
     // std::vector<Coord> input = { {0,0}, {0,1}, {3,0} };
     std::vector<Coord> input = { {0.5,0}, {0,1}, {-1,-1} };
+    std::cout << "input = [";
+    for (const Coord& c : input)
+        std::cout << " " << c.x << "," << c.y << ";";
+    std::cout << "\b];\n";
+    std::cout << "fh  = figure;\nah = axes(fh);\nhold(ah, 'on');\n";
+    std::cout << "plot(ah, input(:,1), input(:,2), '.')\n";
 
     beach = BeachLine();
     diagram = DCEL();
