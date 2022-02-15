@@ -14,9 +14,32 @@ void handleCircleEvent(CircleEvent*);
 
 int main()
 {
+    //std::vector<Coord> input = { {0,0}, {0,1}, {3,0} };
+    //std::vector<Coord> input = { {0.5,0}, {0,1}, {-1,-1}
+    //,{1,-0.5}
+    //};
+    //*
+    std::vector<Coord> input = {
+        {0.5, 0.9}, {0.7, 2.1}, {1.2, 2.85}
+        ,{2.7, 2.3}, {2, 1.5}, {2.55, 0.25}
+        ,{2.6, 2.1}, {2.25,3.1}, {2.6, 4.45}
+        ,{3, 3.2}, {3.3,4.9}, {3.7,4}
+        ,{0,1}, {1,1}, {0,10},{2,10}, {3,10}
+    };
+    //*/
+    //std::vector<Coord> input = { {0.5,0}, {0,1}, {-1,-1}, {1,-0.5}, {2, 4}, {-2,1.6} };
+    // Degenerate cases
+    /*
+    std::vector<Coord> input = {
+        {2, 0}, {-5,0},  {4,0},
+        //{2, 0},
+        {5,0}
+        ,{3, 0}, {14,0}, {38,0}
+    };//*/
+    //std::vector<Coord> input = { {2,0}, {-2,0}, {0,-10} };
+    //std::vector<Coord> input = { {2,2}, {3,2}, {0,0}, {5,0} };
+    //std::vector<Coord> input = { {2,-2}, {2,-3}, {0,0}, {0,-5} };
 
-    // std::vector<Coord> input = { {0,0}, {0,1}, {3,0} };
-    std::vector<Coord> input = { {0.5,0}, {0,1}, {-1,-1} };
     std::cout << "input = [";
     for (const Coord& c : input)
         std::cout << " " << c.x << "," << c.y << ";";
