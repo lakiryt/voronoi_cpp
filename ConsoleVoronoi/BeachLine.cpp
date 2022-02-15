@@ -339,11 +339,6 @@ void BeachLine::shrink(CircleEvent* e, DCEL* interim_diag, EventQueue* event_que
 		while (right_arc_beach->left)
 			right_arc_beach = right_arc_beach->left;
 	}
-	std::cout << "left breakpoint: " << left_bp_data.siteLeft.x << "," << left_bp_data.siteLeft.y << " | " << left_bp_data.siteRight.x << "," << left_bp_data.siteRight.y;
-	if (left_bp_data.bisector) std::cout << " with "; else std::cout << " without ";
-	std::cout << "bisector\n";
-	std::cout << "right breakpoint: " << right_bp_data.siteLeft.x << "," << right_bp_data.siteLeft.y << " | " << right_bp_data.siteRight.x << "," << right_bp_data.siteRight.y;
-	if (right_bp_data.bisector)std::cout << " with "; else std::cout << " without ";
 
 	// Update breakpoint
 	HalfEdge* in_edge = interim_diag->createNewEdge();

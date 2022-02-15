@@ -47,7 +47,6 @@ int main()
                 // Handle succesive same y-coordinates
                 while (!events.isEmpty() && std::abs(std::get<SiteEvent*>(events.top().i)->position.y - initial_y) < DBL_EPSILON)
                 {
-                    beach.display();
                     beach.insertSameY(std::get<SiteEvent*>(events.pop().i)->position, &diagram);
                 }
             }
@@ -57,7 +56,6 @@ int main()
             events.push(e2);
             events.push(e1);
         }
-        beach.display();
     }
 
     while (!events.isEmpty())
@@ -77,7 +75,6 @@ int main()
 
 void handleSiteEvent(SiteEvent* e)
 {
-    std::cout << "\n * Insert (" << e->position.x << "," << e->position.y << ")...\n";
     beach.insert(e->position.x, e->position.y, &diagram, &events);
     // beach.display();
 }
@@ -85,6 +82,5 @@ void handleSiteEvent(SiteEvent* e)
 // Assume validity
 void handleCircleEvent(CircleEvent* e)
 {
-    std::cout << "\n * Circle (" << e->circleCenter.x <<"," << e->circleCenter.y << ") event at (" << e->position.x << "," << e->position.y << ") detected.\n";
     e->disappearingArc->shrink(e, &diagram, &events);
 }
