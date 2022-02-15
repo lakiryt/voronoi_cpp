@@ -270,9 +270,6 @@ void BeachLine::insert(double x, double sweepLineY, DCEL* interim_diag, EventQue
 // Assume this is an arc surrounded with neighbours
 void BeachLine::shrink(CircleEvent* e, DCEL* interim_diag, EventQueue* event_queue)
 {
-	std::cout << "\nshrink() called on:\n";
-	this->display();
-
 	// (Delete leaf)
 	// Detach this and this->parent from tree
 	BeachLine* foldpoint;
@@ -347,7 +344,6 @@ void BeachLine::shrink(CircleEvent* e, DCEL* interim_diag, EventQueue* event_que
 	std::cout << "bisector\n";
 	std::cout << "right breakpoint: " << right_bp_data.siteLeft.x << "," << right_bp_data.siteLeft.y << " | " << right_bp_data.siteRight.x << "," << right_bp_data.siteRight.y;
 	if (right_bp_data.bisector)std::cout << " with "; else std::cout << " without ";
-	std::cout << "bisector\n";
 
 	// Update breakpoint
 	HalfEdge* in_edge = interim_diag->createNewEdge();
