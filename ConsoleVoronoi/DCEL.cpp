@@ -120,4 +120,16 @@ void DCEL::createBoundingBox(std::vector<Coord> sites, std::vector<BreakPoint> h
 		bp.bisector->getTwin()->setOrigin(new_vtx);
 		new_vtx->setIncident(bp.bisector->getTwin());
 	}
+
+	// Top vertical
+	for (HalfEdge* e : edges)
+	{
+		if (e->getOrigin() == NULL)
+		{
+			Coord downPos = e->getTwin()->getOrigin()->getPosition();
+			Vertex* newVtx = this->createNewVertex({ downPos.x, maxBound.y });
+			e->setOrigin(newVtx);
+			newVtx->setIncident(e);
+		}
+	}
 }
